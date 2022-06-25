@@ -18,7 +18,7 @@ const HomeCarousel: Component = () => {
     setCw(carouselRef?.offsetWidth || wh());
     gsap.to(".carousel-track", {
       scrollTrigger: {
-        trigger: ".carousel-track",
+        trigger: ".carousel-wrapper",
         pin: true,
         scrub: 1,
         pinSpacing: false,
