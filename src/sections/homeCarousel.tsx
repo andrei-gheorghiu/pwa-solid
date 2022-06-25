@@ -20,8 +20,8 @@ const HomeCarousel: Component = () => {
       scrollTrigger: {
         trigger: ".carousel-track",
         pin: true,
-        scrub: 0.6,
-        pinSpacing: true,
+        scrub: 1,
+        pinSpacing: false,
         snap: 1 / images.length,
         end: () => "+=" + cw() || 0,
       },
