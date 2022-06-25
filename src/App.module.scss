@@ -1,0 +1,59 @@
+.App {
+  text-align: center;
+  > * {
+    min-height: var(--scrollHeight);
+  }
+  background-color: #282c34;
+}
+
+.logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.section {
+  min-height: 100vh;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.section > * {
+  display: flex;
+  font-size: calc(10px + 12vmin);
+  @media(min-width: 100vh) {
+    font-size: calc(10px + 12vmax);
+  }
+  line-height: 1;
+  font-weight: 100;
+}
+.section :global {
+  .paul-woods {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: 1fr 1fr;
+    height: 100vh;
+    .paul, .woods {
+      align-items: end;
+    }
+    > * {
+      display: flex;
+    }
+    .paul, .art {
+      justify-content: end;
+    }
+
+    .paul, .com {
+      color: rgba(255,255,255,.42);
+    }
+    .letter {
+      opacity: 0;
+    }
+  }
+}
+
+.link {
+  color: #b318f0;
+}
+
+* {
+  box-sizing: border-box;
+}
