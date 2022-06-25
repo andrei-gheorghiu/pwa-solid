@@ -12,6 +12,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/flickity": "^2.2.6",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "autoprefixer": "^10.4.7",
@@ -32,6 +33,7 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
+    "flickity": "^3.0.0",
     "gsap": "^3.10.4",
     "solid-js": "^1.4.2"
   }

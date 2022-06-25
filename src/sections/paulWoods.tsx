@@ -14,7 +14,7 @@ const PaulWoods: Component = () => {
     window.onresize = updateWSize;
     gsap.to(`.${styles.section}`, {
       scrollTrigger: {
-        pin: `.${styles.App}`,
+        pin: `.${styles.intro}`,
         pinSpacing: false,
       },
     });
