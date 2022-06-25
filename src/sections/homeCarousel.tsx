@@ -1,7 +1,7 @@
 import type { Component } from "solid-js";
-import { createSignal, For, onMount } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
 import gsap from "gsap";
-import {wh, ww} from "../store/window";
+import { wh, ww } from "../store/window";
 const [cw, setCw] = createSignal(0);
 
 const HomeCarousel: Component = () => {
@@ -15,23 +15,39 @@ const HomeCarousel: Component = () => {
     "Paul_Woods-For-our-Future_oil-on-canvas_2016.jpeg",
     "Paul_Woods-The-Somme-on-the-Liffey_oil-on-canvas_2016.jpeg",
   ];
-  onMount(() => {
-    setTimeout(() => {
-      setCw(carouselRef?.offsetWidth || wh());
-      gsap.to(".carousel-track", {
-        scrollTrigger: {
-          trigger: ".carousel-track",
-          pin: true,
-          scrub: 1,
-          pinSpacing: true,
-          snap: 1 / images.length,
-          end: () => "+=" + carouselRef?.offsetWidth || 0,
-        },
-        x: () => -(carouselRef?.scrollWidth || 0 - ww()) + "px",
-        ease: "none",
-      });
+  const updateScroll = () => {
+    setCw(carouselRef?.offsetWidth || wh());
+    gsap.to(".carousel-track", {
+      scrollTrigger: {
+        trigger: ".carousel-track",
+        pin: true,
+        scrub: 0.6,
+        pinSpacing: true,
+        snap: 1 / images.length,
+        end: () => "+=" + cw() || 0,
+      },
+      x: () => -(carouselRef?.scrollWidth || 0 - ww()) + "px",
+      ease: "none",
     });
+  };
+  let observer: ResizeObserver | null;
+  onMount(() => {
+    if (carouselRef instanceof HTMLDivElement) {
+      observer = new ResizeObserver(() => {
+        updateScroll();
+      });
+      observer.observe(carouselRef);
+    }
   });
+  onCleanup(() => {
+    if (
+      observer instanceof ResizeObserver &&
+      carouselRef instanceof HTMLDivElement
+    ) {
+      observer.unobserve(carouselRef);
+    }
+  });
+
   return (
     <div
       class="home-carousel"
