@@ -1,9 +1,8 @@
 import type { Component } from "solid-js";
-import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
+import { createSignal, For, onCleanup, onMount } from "solid-js";
 import gsap from "gsap";
 import { wh, ww } from "../store/window";
 const [cw, setCw] = createSignal(0);
-
 const HomeCarousel: Component = () => {
   let carouselRef: HTMLDivElement | undefined;
   const images = [
@@ -62,7 +61,7 @@ const HomeCarousel: Component = () => {
             <div class="carousel-slide" data-cw={cw()}>
               {image && (
                 <div class="frame">
-                  <img src={"/src/assets/gallery/" + image} />
+                  <img src={"/assets/gallery/" + image} />
                 </div>
               )}
             </div>
