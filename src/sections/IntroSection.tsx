@@ -1,10 +1,10 @@
 import type { Component } from "solid-js";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Observer } from "gsap/Observer"
-// import { SplitText } from "gsap/SplitText";
+import { Observer } from "gsap/Observer";
 import { createSignal, For, onCleanup, onMount } from "solid-js";
 import styles from "./Intro.module.scss";
+import { wh, ww } from "../store/window";
 
 interface Step {
   title: string;
@@ -39,14 +39,23 @@ const IntroSection: Component = () => {
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [done, setDone] = createSignal(false);
   const [currentIndex, setCurrentIndex] = createSignal(-1);
+  const [xPos, setXPos] = createSignal(ww() / 2);
+  const [yPos, setYPos] = createSignal(wh() / 2);
   let outerWrappers: HTMLDivElement[] = [];
   let innerWrappers: HTMLDivElement[] = [];
   let sections: HTMLElement[] = [];
   let images: HTMLImageElement[] = [];
-  let observer: Observer | undefined;
+  let observers: Observer[] = [];
+  const onMouseMove = (e: any) => {
+    const { x, y } = e;
+    setXPos(x);
+    setYPos(y);
+  };
+  const maskImage = () =>
+    `circle 810px at ${xPos()}px ${yPos()}px, transparent 50%, white 50%`;
   onMount(() => {
     outerWrappers = toArray(".outer", wrapper);
-    innerWrappers = toArray(".inner", wrapper);
+    innerWrappers = toArray([".inner"], wrapper);
     sections = toArray("section", wrapper);
     images = toArray(".bg", wrapper);
     outerWrappers.forEach((outer, i) => {
@@ -54,37 +63,45 @@ const IntroSection: Component = () => {
       set(innerWrappers[i], { yPercent: -100 });
     });
     goToStep(0, 1);
-    observer = ScrollTrigger.observe({
-      type: "wheel,touch,pointer",
-      wheelSpeed: -1,
-      onDown: () => {
-        !isAnimating() && goToStep(currentIndex() - 1, -1);
-      },
-      onUp: () => {
-        !isAnimating() && goToStep(currentIndex() + 1, 1);
-      },
-    });
+    observers.push(
+      ScrollTrigger.observe({
+        type: "wheel,touch,pointer",
+        wheelSpeed: -1,
+        onDown: () => {
+          !isAnimating() && goToStep(currentIndex() - 1, -1);
+        },
+        onUp: () => {
+          !isAnimating() && goToStep(currentIndex() + 1, 1);
+        },
+      }),
+      ScrollTrigger.observe({
+        type: "pointer,touch",
+        onMove: onMouseMove,
+      })
+    );
   });
   onCleanup(() => {
-    observer?.kill();
+    observers.forEach((obs) => obs.kill());
   });
 
   const getBackground = (step: Step) => ({
-    "background-image": `url('assets/gallery/${step.image}')`,
+    "background-image": step.image
+      ? `url('assets/gallery/${step.image}')`
+      : `radial-gradient(circle 810px at ${xPos()}px calc(${yPos()}px + var(--y-percent)), transparent 50%, rgba(255,255,255,.05) 50%)`,
     "background-color": "#191919",
   });
 
+  const getTitleClass = (title: string) =>
+    ["title", title.replace(".", "")].join(" ");
+
   const goToStep = (index: number, direction: number) => {
-    if (index >= steps.length) {
-      return;
-    }
-    console.log({ index, direction });
+    // if (index >= steps.length) {
+    //   return;
+    // }
     if (direction === -1) {
       setDone(false);
       if (!index) {
-        console.log(index, "here", 0);
         index = steps.length - 1;
-        console.log(index, "here", 1);
       }
     }
     index = wrap(0, steps.length)(index);
@@ -104,7 +121,15 @@ const IntroSection: Component = () => {
       set(sections[currentIndex()], { zIndex: 0 });
       tl.to(images[currentIndex()], {
         yPercent: -15 * dFactor,
-      }).set(sections[currentIndex()], { autoAlpha: 0 });
+      })
+        .to(
+          sections[currentIndex()],
+          {
+            "--y-percent": -15 * dFactor + "vh",
+          },
+          0
+        )
+        .set(sections[currentIndex()], { autoAlpha: 0 });
     }
     set(sections[index], { autoAlpha: 1, zIndex: 1 });
     if (direction === -1) {
@@ -122,38 +147,48 @@ const IntroSection: Component = () => {
       },
       { yPercent: 0 },
       0
-    ).fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0 }, 0);
+    )
+      .fromTo(images[index], { yPercent: 15 * dFactor }, { yPercent: 0 }, 0)
+      .fromTo(
+        sections[index],
+        {
+          "--y-percent": -15 * dFactor + "vh",
+        },
+        {
+          "--y-percent": 0 + "vh",
+        },
+        0
+      );
   };
 
   return (
     <div ref={wrapper} class={styles.Intro}>
-      <div class="absolute z-10 text-white">
-        {JSON.stringify({ index: currentIndex(), done: done() }, null, 2)}
-      </div>
       <For each={steps}>
         {(step) => (
           <section>
             <div class="outer">
               <div class="inner">
+                <div
+                  class="blur-mask"
+                  style={{
+                    "mask-image": `radial-gradient(${maskImage()})`,
+                    "-webkit-mask-image": `radial-gradient(${maskImage()})`,
+                  }}
+                />
                 <div class="bg">
                   <div style={getBackground(step)} />
                 </div>
                 <div class="title-grid">
                   {step.title && (
-                    <h2
-                      class={["title", step.title.replace(".", "")].join(" ")}
-                    >
-                      {step.title}
-                    </h2>
+                    <h2 class={getTitleClass(step.title)}>{step.title}</h2>
                   )}
                   {!step.title && (
                     <>
                       {steps.map(({ title }, index) => (
                         <h2
                           class={[
-                            title.replace(".", ""),
+                            getTitleClass(title),
                             index < 3 ? "" : "dimmed",
-                            "title",
                           ].join(" ")}
                         >
                           {title}
@@ -171,7 +206,7 @@ const IntroSection: Component = () => {
         {steps.map(({ title }, index) => (
           <h2
             class={[
-              title.replace(".", ""),
+              getTitleClass(title),
               index > currentIndex() || done()
                 ? "text-transparent"
                 : currentIndex() === steps.length - 1
