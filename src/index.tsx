@@ -2,6 +2,7 @@
 import { render } from "solid-js/web";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import { SplitText } from "gsap/SplitText";
 import "tailwindcss/tailwind.css";
 import "flickity/dist/flickity.min.css";
 import "./index.css";
