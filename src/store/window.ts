@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-const [wh, setWh] = createSignal<number>(800);
-const [ww, setWw] = createSignal<number>(800);
-
-export { wh, setWh, ww, setWw };
+export const [ww, setWw] = createSignal<number>(window.innerWidth);
+export const [wh, setWh] = createSignal<number>(window.innerHeight);
+export const [xPos, setXPos] = createSignal(ww() / 2);
+export const [yPos, setYPos] = createSignal(wh() / 2);

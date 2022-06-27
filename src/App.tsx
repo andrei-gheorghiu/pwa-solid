@@ -22,9 +22,9 @@ const App: Component = () => {
       <div class={styles.section}>
         <IntroSection />
       </div>
-      <div class={styles.section} style={{ visibility: "hidden" }}>
+      {/*<div class={styles.section} style={{ visibility: "hidden" }}>
         <HomeCarousel />
-      </div>
+      </div>*/}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import type { Component } from "solid-js";
 import { For } from "solid-js";
+import { xPos, yPos } from "../store/window";
 
 interface CursorProps {
   size?: number;
@@ -47,40 +48,48 @@ const CrossHair: Component<CursorProps> = ({
   });
 
   return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
+    <div
+      class="cross-hair"
+      style={{
+        left: `${xPos()}px`,
+        top: `${yPos()}px`,
+      }}
     >
-      <For each={circles}>{(r) => <circle {...makeCircle(r)} />}</For>
-      <For each={[1, -1]}>
-        {(side) => (
-          <For each={directions}>
-            {(axis) => (
-              <>
-                <line
-                  {...makeLine({
-                    axis,
-                    [axis + "1"]: half + (outerRadius + outerOffset) * side,
-                    [axis + "2"]: half + (innerRadius - outerOffset) * side,
-                    "stroke-width": thickStroke,
-                  })}
-                />
-                <line
-                  {...makeLine({
-                    axis,
-                    [axis + "1"]: half + (innerRadius - outerOffset) * side,
-                    [axis + "2"]: half + (innerRadius - innerOffset) * side,
-                    "stroke-width": thinStroke,
-                  })}
-                />
-              </>
-            )}
-          </For>
-        )}
-      </For>
-    </svg>
+      <svg
+        viewBox={`0 0 ${size} ${size}`}
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+      >
+        <For each={circles}>{(r) => <circle {...makeCircle(r)} />}</For>
+        <For each={[1, -1]}>
+          {(side) => (
+            <For each={directions}>
+              {(axis) => (
+                <>
+                  <line
+                    {...makeLine({
+                      axis,
+                      [axis + "1"]: half + (outerRadius + outerOffset) * side,
+                      [axis + "2"]: half + (innerRadius - outerOffset) * side,
+                      "stroke-width": thickStroke,
+                    })}
+                  />
+                  <line
+                    {...makeLine({
+                      axis,
+                      [axis + "1"]: half + (innerRadius - outerOffset) * side,
+                      [axis + "2"]: half + (innerRadius - innerOffset) * side,
+                      "stroke-width": thinStroke,
+                    })}
+                  />
+                </>
+              )}
+            </For>
+          )}
+        </For>
+      </svg>
+    </div>
   );
 };
 
