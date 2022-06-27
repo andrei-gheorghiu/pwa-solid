@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { SplitText } from "gsap/SplitText";
 // @ts-ignore
-import { DrawSVGPlugin } from "../public/assets/js/draw-svg-plugin";
+import { DrawSVGPlugin } from "./assets/js/draw-svg-plugin";
 import "tailwindcss/tailwind.css";
 import "flickity/dist/flickity.min.css";
 import "./index.css";
