@@ -14,7 +14,7 @@
 .section :global {
   .paul-woods {
     font-size: calc(10px + 12vmin);
-    @media(min-width: 100vh) {
+    @media (min-width: 100vh) {
       font-size: calc(10px + 12vmax);
     }
     line-height: 1;
@@ -23,18 +23,21 @@
     grid-template-columns: 2fr 3fr;
     grid-template-rows: 1fr 1fr;
     height: 100vh;
-    .paul, .woods {
+    .paul,
+    .woods {
       align-items: end;
     }
     > * {
       display: flex;
     }
-    .paul, .art {
+    .paul,
+    .art {
       justify-content: end;
     }
 
-    .paul, .com {
-      color: rgba(255,255,255,.42);
+    .paul,
+    .com {
+      color: rgba(255, 255, 255, 0.42);
     }
     .letter {
       opacity: 0;
@@ -61,17 +64,17 @@
     .frame {
       position: relative;
       background: #111;
-      border: 1px solid rgba(0,0,0,.42);
+      border: 1px solid rgba(0, 0, 0, 0.42);
       background: repeating-linear-gradient(
-                      -45deg,
-                      #191919,
-                      #191919 3px,
-                      #212121 3px,
-                      #212121 5px
+        -45deg,
+        #191919,
+        #191919 3px,
+        #212121 3px,
+        #212121 5px
       );
       &:before {
         position: absolute;
-        content: '';
+        content: "";
         top: 5vh;
         left: 5vh;
         bottom: 5vh;
@@ -79,20 +82,22 @@
         background-color: rgba(200, 222, 255, 0.27);
         background-blend-mode: color-dodge;
         clip-path: polygon(
-                        0 0,
-                        0 100%,
-                        100% 100%,
-                        100% 0,
-                        0 0,
-                        0 var(--bw),
-                        calc(100% - var(--bw)) var(--bw),
-                        calc(100% - var(--bw)) calc(100% - var(--bw)),
-                        var(--bw) calc(100% - var(--bw)),
-                        var(--bw) var(--bw)
+          0 0,
+          0 100%,
+          100% 100%,
+          100% 0,
+          0 0,
+          0 var(--bw),
+          calc(100% - var(--bw)) var(--bw),
+          calc(100% - var(--bw)) calc(100% - var(--bw)),
+          var(--bw) calc(100% - var(--bw)),
+          var(--bw) var(--bw)
         );
       }
       img {
-        box-shadow: 0 0 4vh rgba(255,255,255,.12), 0 1px 8px 0 rgb(0 0 0 / 40%), 0 3px 4px 0 rgb(0 0 0 / 28%), 0 3px 3px -2px rgb(0 0 0 / 24%);
+        box-shadow: 0 0 4vh rgba(255, 255, 255, 0.12),
+          0 1px 8px 0 rgb(0 0 0 / 40%), 0 3px 4px 0 rgb(0 0 0 / 28%),
+          0 3px 3px -2px rgb(0 0 0 / 24%);
         max-height: 80vh;
         min-height: 80vh;
         margin: 5vh;

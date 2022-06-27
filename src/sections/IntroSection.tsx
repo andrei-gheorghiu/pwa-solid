@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Observer } from "gsap/Observer";
 import { createSignal, For, onCleanup, onMount } from "solid-js";
 import styles from "./Intro.module.scss";
-import { wh, ww } from "../store/window";
+import CrossHair from "../components/CrossHair";
 
 interface Step {
   title: string;
@@ -39,8 +39,8 @@ const IntroSection: Component = () => {
   const [isAnimating, setIsAnimating] = createSignal(false);
   const [done, setDone] = createSignal(false);
   const [currentIndex, setCurrentIndex] = createSignal(-1);
-  const [xPos, setXPos] = createSignal(ww() / 2);
-  const [yPos, setYPos] = createSignal(wh() / 2);
+  const [xPos, setXPos] = createSignal(window.innerWidth / 2);
+  const [yPos, setYPos] = createSignal(window.innerHeight / 2);
   let outerWrappers: HTMLDivElement[] = [];
   let innerWrappers: HTMLDivElement[] = [];
   let sections: HTMLElement[] = [];
@@ -87,8 +87,10 @@ const IntroSection: Component = () => {
   const getBackground = (step: Step) => ({
     "background-image": step.image
       ? `url('assets/gallery/${step.image}')`
-      : `radial-gradient(circle 810px at ${xPos()}px calc(${yPos()}px + var(--y-percent)), transparent 50%, rgba(255,255,255,.05) 50%)`,
-    "background-color": "#191919",
+      : `radial-gradient(ellipse at top, #e66465, transparent), 
+      radial-gradient(ellipse at bottom, #4d9f0c, transparent),
+      radial-gradient(circle 810px at ${xPos()}px calc(${yPos()}px + var(--y-percent)), transparent 50%, rgba(255,255,255,.42) 50%)`,
+    "background-color": "black",
   });
 
   const getTitleClass = (title: string) =>
@@ -202,6 +204,15 @@ const IntroSection: Component = () => {
           </section>
         )}
       </For>
+      <div
+        class="cross-hair"
+        style={{
+          left: `${xPos()}px`,
+          top: `${yPos()}px`,
+        }}
+      >
+        <CrossHair />
+      </div>
       <div class="fixed h-full w-full top-0 title-grid z-[2]">
         {steps.map(({ title }, index) => (
           <h2
