@@ -1,6 +1,6 @@
 import type { Component } from "solid-js";
 import IntroSection from "./sections/IntroSection";
-import HomeCarousel from "./sections/homeCarousel";
+// import HomeCarousel from "./sections/homeCarousel";
 import styles from "./App.module.scss";
 import { onCleanup, onMount } from "solid-js";
 import { setWh, setWw } from "./store/window";
