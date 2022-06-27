@@ -1,9 +1,10 @@
 import type { Component } from "solid-js";
 import IntroSection from "./sections/IntroSection";
 // import HomeCarousel from "./sections/homeCarousel";
-import styles from "./App.module.scss";
+import styles from "./style/App.module.scss";
 import { onCleanup, onMount } from "solid-js";
 import { setWh, setWw } from "./store/window";
+import MenuButton from "./components/MenuButton";
 
 const App: Component = () => {
   const onResize = () => {
@@ -19,6 +20,7 @@ const App: Component = () => {
   });
   return (
     <div class={styles.App}>
+      <MenuButton />
       <div class={styles.section}>
         <IntroSection />
       </div>

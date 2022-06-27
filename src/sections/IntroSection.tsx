@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Observer } from "gsap/Observer";
 import { createSignal, For, onCleanup, onMount } from "solid-js";
-import styles from "./Intro.module.scss";
+import styles from "../style/IntroSection.module.scss";
 import CrossHair from "../components/CrossHair";
 import { setXPos, setYPos, xPos, yPos } from "../store/window";
 
@@ -29,6 +29,7 @@ const IntroSection: Component = () => {
       ScrollTrigger.observe({
         type: "wheel,touch,pointer",
         wheelSpeed: -1,
+        tolerance: 10,
         onDown: () => {
           !isAnimating() && goToStep(currentIndex() - 1, -1);
         },

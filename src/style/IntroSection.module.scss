@@ -70,12 +70,12 @@ $panels: paul, woods, art, com;
     }
     .cross-hair {
       --ch-size: 100px;
+      pointer-events: none;
       width: 0;
       height: 0;
       position: fixed;
       overflow: visible;
       z-index: 100;
-      pointer-events: none;
       display: flex;
       align-items: center;
       justify-content: center;

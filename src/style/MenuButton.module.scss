@@ -1,0 +1,23 @@
+:global {
+  #theBurger {
+    opacity: 0;
+    cursor: pointer;
+    position: fixed;
+    z-index: 99;
+    right: 10px;
+    top: 30px;
+    color: #fff;
+    &:hover {
+      color: #e6ff00;
+    }
+  }
+}
+.patty {
+  --foo: ''
+}
+.buns {
+  --bar: ''
+}
+.letters {
+  --baz: ''
+}
